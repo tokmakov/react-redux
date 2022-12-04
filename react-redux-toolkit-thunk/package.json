@@ -1,5 +1,5 @@
 {
-  "name": "react-redux-toolkit-one",
+  "name": "react-redux-toolkit-thunk",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

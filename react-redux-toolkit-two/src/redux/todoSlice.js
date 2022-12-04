@@ -12,24 +12,8 @@ const todoSlice = createSlice({
     name: 'todo',
     initialState: initialState,
     reducers: {
-        /*
         create(state, action) {
             state.push(action.payload); // мутация state
-        },
-        */
-        create: {
-            reducer: (state, action) => {
-                state.push(action.payload);
-            },
-            prepare: (text) => {
-                return {
-                    payload: {
-                        id: uuid(),
-                        title: text,
-                        completed: false,
-                    }
-                };
-            },
         },
         toggle(state, action) {
             const item = state.find((item) => item.id === action.payload);
@@ -40,7 +24,7 @@ const todoSlice = createSlice({
         },
     },
 });
-console.log(todoSlice)
+
 export const { create, toggle, remove } = todoSlice.actions; // генераторы действий
 
 export default todoSlice.reducer;
