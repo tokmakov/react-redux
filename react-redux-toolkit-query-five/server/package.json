@@ -1,0 +1,22 @@
+{
+    "name": "react-redux-toolkit-query-server-five",
+    "version": "0.1.0",
+    "private": true,
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node index.js",
+        "start-dev": "nodemon index.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "cors": "^2.8.5",
+        "express": "^4.18.1",
+        "uuid": "^9.0.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    }
+}
