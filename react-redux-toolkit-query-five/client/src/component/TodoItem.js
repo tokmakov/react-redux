@@ -1,53 +1,33 @@
-import { useUpdateTodoMutation, useRemoveTodoMutation } from '../redux/todoApi';
-import { useSelector, useDispatch } from 'react-redux';
-import { setView, setEdit, setUpdating } from '../redux/userSlice';
-import { Loader } from './Loader';
-import { useEffect } from 'react';
+import { useGetOneTodoQuery, useUpdateTodoMutation, useRemoveTodoMutation } from '../redux/todoApi';
 
 export function TodoItem(props) {
-    const { id, title, completed } = props;
-
-    // при удалении задачи мы должны будем установить в null значение id просматриваемой или
-    // редактируемой задачи, если это просматривается или редактируется именно эта задача
-    const viewTodo = useSelector((state) => state.user.view);
-    const editTodo = useSelector((state) => state.user.edit);
-
-    const dispatch = useDispatch();
+    const { data, isFetching, isSuccess } = useGetOneTodoQuery(props.id);
 
     const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();
-    const [removeTodo, { isLoading: isRemoving }] = useRemoveTodoMutation();
+    const [removeTodo, { isLoading: isRemoving, isSuccess: isRemoved }] = useRemoveTodoMutation();
 
     const handleToggle = () => {
         updateTodo({
-            id: id,
-            completed: !completed,
+            id: props.id,
+            title: data.title + ' (updated)',
+            completed: !data.completed,
         });
     };
 
-    const handleRemove = () => {
-        removeTodo(id);
-        if (id === viewTodo) {
-            dispatch(setView(null));
-        }
-        if (id === editTodo) {
-            dispatch(setEdit(null));
-        }
-    };
+    if (isRemoved) return null; // NEW если задача удалена
+    if (isFetching) return <p className="info">Получение задачи {props.id} с сервера...</p>;
+    if (!isSuccess) return <p className="error">Не удалось загрузить задачу {props.id}</p>;
+    if (isUpdating) return <p className="info">Обновление задачи {props.id} на сервере...</p>;
+    if (isRemoving) return <p className="info">Удаление задачи {props.id} на сервере</p>;
 
     return (
         <div className="todo-item">
             <span>
-                <input type="checkbox" checked={completed} onChange={handleToggle} />
+                <input type="checkbox" checked={data.completed} onChange={handleToggle} />
                 &nbsp;
-                <span>{title}</span>
-                &nbsp;
-                <button onClick={() => dispatch(setView(id))}>View</button>
-                &nbsp;
-                <button onClick={() => dispatch(setEdit(id))}>Edit</button>
-                {(isUpdating || updating) && <Loader />}
-                {isRemoving && <Loader />}
+                <span>{data.title}</span>
             </span>
-            <span className="remove" onClick={handleRemove}>
+            <span className="remove" onClick={() => removeTodo(props.id)}>
                 &times;
             </span>
         </div>

@@ -2,9 +2,9 @@ import { useGetAllTodoQuery } from '../redux/todoApi.js';
 import { TodoItem } from './TodoItem.js';
 
 export function TodoList(props) {
-    const { data, isLoading, isSuccess } = useGetAllTodoQuery(null);
+    const { data, isFetching, isSuccess } = useGetAllTodoQuery(null);
 
-    if (isLoading) return <p>Получение списка задач с сервера...</p>;
+    if (isFetching) return <p className="info">Получение списка задач с сервера...</p>;
     if (!isSuccess) return <p className="error">Не удалось загрузить список</p>;
 
     return (

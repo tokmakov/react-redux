@@ -10,8 +10,16 @@ export function TodoView() {
     const { data, isFetching, isSuccess } = useGetOneTodoQuery(id, { skip: id ? false : true });
 
     if (id === null) return null;
-    if (isFetching) return <p className="info">Получение задачи {id} с сервера...</p>;
-    if (!isSuccess) return <p className="error">Не удалось получить задачу {id}</p>;
+    if (isFetching) return (
+        <div className="todo-view">
+            <span className="info">Получение задачи {id} с сервера...</span>
+        </div>
+    )
+    if (!isSuccess) return (
+        <div className="todo-view">
+            <span className="error">Не удалось получить задачу {id}</span>
+        </div>
+    )
 
     return (
         <div className="todo-view">

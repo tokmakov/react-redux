@@ -6,8 +6,11 @@ export const todoApi = createApi({
     tagTypes: ['todo'],
     endpoints: (builder) => ({
         getAllTodo: builder.query({
-            query: () => '/todo',
-            providesTags: [{ type: 'todo', id: 'list' }],
+            query: ({ page }) => `/todo?page=${page}`,
+            providesTags: (res = [], err, arg) => [
+                ...res.map((item) => ({ type: 'todo', id: item.id })),
+                { type: 'todo', id: 'list' },
+            ],
         }),
         getOneTodo: builder.query({
             query: (id) => `/todo/${id}`,
@@ -30,14 +33,20 @@ export const todoApi = createApi({
                     body: rest,
                 };
             },
-            invalidatesTags: (res, err, arg) => [{ type: 'todo', id: arg.id }],
+            invalidatesTags: (res, err, arg) => [
+                { type: 'todo', id: arg.id },
+                { type: 'todo', id: 'list' },
+            ],
         }),
         removeTodo: builder.mutation({
             query: (id) => ({
                 url: `/todo/${id}`,
                 method: 'DELETE',
             }),
-            // NEW при удалении задачи не надо ничего запрашивать с сервера
+            invalidatesTags: (res, err, arg) => [
+                { type: 'todo', id: arg },
+                { type: 'todo', id: 'list' },
+            ],
         }),
     }),
 });

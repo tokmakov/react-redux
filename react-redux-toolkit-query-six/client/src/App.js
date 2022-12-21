@@ -1,9 +1,10 @@
 import './App.css';
 
-import { TodoList } from './component/TodoList.js';
-import { TodoForm } from './component/TodoForm.js';
 import { Provider } from 'react-redux';
-import { store } from './redux/store.js';
+import { store } from './redux/store';
+import { TodoForm } from './component/TodoForm';
+import { TodoList } from './component/TodoList';
+import { TodoView } from './component/TodoView';
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                 <h1>Список задач</h1>
                 <TodoForm />
                 <TodoList />
+                <TodoView />
             </div>
         </Provider>
     );

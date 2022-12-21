@@ -6,26 +6,31 @@ const todos = [
     {
         id: uuid(),
         title: 'Первая задача',
+        content: 'Описание первой задачи',
         completed: false,
     },
     {
         id: uuid(),
         title: 'Вторая задача',
+        content: 'Описание второй задачи',
         completed: true,
     },
     {
         id: uuid(),
         title: 'Третья задача',
+        content: 'Описание третьей задачи',
         completed: false,
     },
     {
         id: uuid(),
         title: 'Четвертая задача',
+        content: 'Описание четвертой задачи',
         completed: true,
     },
     {
         id: uuid(),
         title: 'Пятая задача',
+        content: 'Описание пятой задачи',
         completed: false,
     },
 ];
@@ -45,9 +50,8 @@ app.use(express.json());
 // GET-запрос на получение всего списка
 app.get('/api/todo', (req, res) => {
     delay(1000);
-    // res.status(404).send();
-    // return;
-    res.json(todos);
+    const short = todos.map(({content, ...rest}) => rest);
+    res.json(short);
 });
 
 // GET-запрос задачи по идентификатору
@@ -67,6 +71,7 @@ app.post('/api/todo', (req, res) => {
     const newTodo = {
         id: uuid(),
         title: req.body.title,
+        content: req.body.content,
         completed: false,
     };
     todos.push(newTodo);
@@ -81,6 +86,7 @@ const update = (req, res) => {
     const todo = todos.find((item) => item.id === id);
     if (todo) {
         if (req.body.title !== undefined) todo.title = req.body.title;
+        if (req.body.content !== undefined) todo.content = req.body.content;
         if (req.body.completed !== undefined) todo.completed = req.body.completed;
         // возвращаем в ответе обновленную задачу
         res.json(todo);
