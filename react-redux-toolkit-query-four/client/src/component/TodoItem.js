@@ -1,7 +1,6 @@
 import { useGetOneTodoQuery, useUpdateTodoMutation, useRemoveTodoMutation } from '../redux/todoApi';
 
 export function TodoItem(props) {
-    console.log('Render TodoItem, id =', props.id)
     const { data, isFetching, isSuccess } = useGetOneTodoQuery(props.id);
 
     const [updateTodo, { isLoading: isUpdating }] = useUpdateTodoMutation();

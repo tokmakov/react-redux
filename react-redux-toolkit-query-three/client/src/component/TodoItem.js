@@ -55,7 +55,7 @@ export function TodoItem(props) {
             isLoading: true,
         });
         removeTodo(props.id)
-            // .unwrap()
+            .unwrap()
             .then((data) => {
                 setRemoveState({
                     ...removeState,
